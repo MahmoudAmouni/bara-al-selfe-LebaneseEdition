@@ -15,11 +15,13 @@ import { styles } from './AddPlayersScreen.styles';
 import { AddPlayersHeader } from '@/components/AddPlayers/AddPlayersHeader';
 import { PlayerInput } from '@/components/AddPlayers/PlayerInput';
 import { PlayerListItem } from '@/components/AddPlayers/PlayerListItem';
+import { useGameStore } from '@/store/useGameStore';
 
 export default function AddPlayersScreen() {
   const router = useRouter();
   const { categoryId } = useLocalSearchParams<{ categoryId: CategoryKey }>();
   const insets = useSafeAreaInsets();
+  const { startGame } = useGameStore();
   
   const [playerName, setPlayerName] = useState('');
   const [players, setPlayers] = useState<string[]>([]);
@@ -49,7 +51,10 @@ export default function AddPlayersScreen() {
       return;
     }
     
-    console.log('Starting game with:', players, 'Category:', categoryId);
+    if (categoryId) {
+      startGame(players, categoryId);
+      router.push('/game-reveal');
+    }
   };
 
   return (
