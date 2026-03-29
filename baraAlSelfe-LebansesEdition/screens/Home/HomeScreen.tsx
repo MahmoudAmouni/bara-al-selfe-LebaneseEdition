@@ -1,13 +1,22 @@
 import React from 'react';
 import { FlatList, View, Text, StatusBar } from 'react-native';
+import { useRouter } from 'expo-router';
 import { getCategories } from '@/constants/categoriesConfig';
 import { CategoryCard } from '@/components/CategoryCard';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { styles } from './HomeScreen.styles';
 
 export default function HomeScreen() {
+  const router = useRouter();
   const categories = getCategories();
   const insets = useSafeAreaInsets();
+
+  const handleCategoryPress = (categoryId: string) => {
+    router.push({
+      pathname: '/add-players',
+      params: { categoryId }
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -28,7 +37,7 @@ export default function HomeScreen() {
         renderItem={({ item }) => (
           <CategoryCard 
             category={item} 
-            onPress={() => console.log('Selected Category:', item.id)} 
+            onPress={() => handleCategoryPress(item.id)} 
           />
         )}
       />
