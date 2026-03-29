@@ -43,4 +43,5 @@ app-example
 /android
 
 
-components/AddPlayers
+components/AddPlayers/PlayerInput
+
