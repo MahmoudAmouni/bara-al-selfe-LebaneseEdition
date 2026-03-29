@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { 
   View, 
   Text, 
-  TextInput, 
-  TouchableOpacity, 
   FlatList, 
   KeyboardAvoidingView, 
   Platform,
-  Alert
+  Alert,
+  TouchableOpacity
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CATEGORIES_CONFIG, CategoryKey } from '@/constants/categoriesConfig';
 import { styles } from './AddPlayersScreen.styles';
+import { AddPlayersHeader } from '@/components/AddPlayers/AddPlayersHeader';
+import { PlayerInput } from '@/components/AddPlayers/PlayerInput';
+import { PlayerListItem } from '@/components/AddPlayers/PlayerListItem';
 
 export default function AddPlayersScreen() {
   const router = useRouter();
@@ -48,7 +50,6 @@ export default function AddPlayersScreen() {
     }
     
     console.log('Starting game with:', players, 'Category:', categoryId);
-    // Future step: Navigate to word selection
   };
 
   return (
@@ -56,38 +57,19 @@ export default function AddPlayersScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Text style={styles.backButtonText}>← رجوع</Text>
-        </TouchableOpacity>
-        
-        <Text style={styles.title}>إضافة لاعبين</Text>
-        
-        {categoryInfo && (
-          <View style={styles.categoryBadge}>
-            <Text style={styles.categoryBadgeText}>الفئة: {categoryInfo.title}</Text>
-          </View>
-        )}
-      </View>
+      <AddPlayersHeader 
+        title="إضافة لاعبين"
+        categoryTitle={categoryInfo?.title}
+        onBack={() => router.back()}
+      />
 
       <View style={styles.content}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="أدخل اسم اللاعب..."
-            placeholderTextColor="#8D6E63"
-            value={playerName}
-            onChangeText={setPlayerName}
-            onSubmitEditing={handleAddPlayer}
-            returnKeyType="done"
-          />
-          <TouchableOpacity 
-            style={styles.addButton} 
-            onPress={handleAddPlayer}
-          >
-            <Text style={styles.addButtonText}>+</Text>
-          </TouchableOpacity>
-        </View>
+        <PlayerInput 
+          value={playerName}
+          onChangeText={setPlayerName}
+          onAdd={handleAddPlayer}
+          placeholder="أدخل اسم اللاعب..."
+        />
 
         <FlatList
           data={players}
@@ -102,17 +84,11 @@ export default function AddPlayersScreen() {
             </View>
           }
           renderItem={({ item, index }) => (
-            <View style={styles.playerItem}>
-              <View style={styles.playerInfo}>
-                <View style={styles.playerNumber}>
-                  <Text style={styles.playerNumberText}>{index + 1}</Text>
-                </View>
-                <Text style={styles.playerName}>{item}</Text>
-              </View>
-              <TouchableOpacity onPress={() => removePlayer(index)} style={styles.removeButton}>
-                <Text style={styles.removeButtonText}>✕</Text>
-              </TouchableOpacity>
-            </View>
+            <PlayerListItem 
+              name={item}
+              index={index}
+              onRemove={() => removePlayer(index)}
+            />
           )}
         />
       </View>

@@ -1,140 +1,16 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF3E0',
   },
-  header: {
-    paddingBottom: 20,
-    paddingHorizontal: 24,
-    backgroundColor: '#FFE0B2',
-    borderBottomWidth: 1,
-    borderBottomColor: '#FFCC80',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  backButton: {
-    marginBottom: 8,
-    paddingVertical: 8,
-  },
-  backButtonText: {
-    fontSize: 18,
-    color: '#D84315',
-    fontWeight: 'bold',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#D84315',
-    textAlign: 'right',
-  },
-  categoryBadge: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#FF6B6B',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginTop: 8,
-  },
-  categoryBadgeText: {
-    color: '#FFF',
-    fontSize: 14,
-    fontWeight: '700',
-  },
   content: {
     flex: 1,
     padding: 20,
   },
-  inputContainer: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    backgroundColor: '#FFF',
-    borderRadius: 15,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginBottom: 20,
-    borderWidth: 2,
-    borderColor: '#FFE0B2',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 5,
-      },
-      android: {
-        elevation: 3,
-      },
-    }),
-  },
-  input: {
-    flex: 1,
-    fontSize: 18,
-    color: '#4E342E',
-    textAlign: 'right',
-    paddingVertical: 8,
-  },
-  addButton: {
-    backgroundColor: '#D84315',
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 12,
-  },
-  addButtonText: {
-    color: '#FFF',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
   playerList: {
     flex: 1,
-  },
-  playerItem: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FFF',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#FFE0B2',
-  },
-  playerInfo: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-  },
-  playerNumber: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#FFE0B2',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 12,
-  },
-  playerNumberText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#D84315',
-  },
-  playerName: {
-    fontSize: 18,
-    color: '#4E342E',
-    fontWeight: '600',
-  },
-  removeButton: {
-    padding: 8,
-  },
-  removeButtonText: {
-    fontSize: 18,
-    color: '#FF6B6B',
   },
   emptyContainer: {
     alignItems: 'center',
