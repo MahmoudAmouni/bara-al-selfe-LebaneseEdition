@@ -23,7 +23,7 @@ const lebanesePunishments = [
 export default function ResultsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { players, votes, spyIndex, secretWord, resetGame } = useGameStore();
+  const { players, votes, spyIndex, secretWord, resetGame, categoryId } = useGameStore();
 
   const voteTally: Record<number, number> = {};
   players.forEach((_, index) => (voteTally[index] = 0));
@@ -55,7 +55,7 @@ export default function ResultsScreen() {
 
   const handleRestart = () => {
     resetGame();
-    router.replace('/' as never);
+    router.replace(`/add-players?categoryId=${categoryId}` as never);
   };
 
   return (

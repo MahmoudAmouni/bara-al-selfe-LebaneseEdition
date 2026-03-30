@@ -225,7 +225,6 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   resetGame: () => {
     set({
-      players: [],
       categoryId: null,
       secretWord: '',
       spyIndex: -1,

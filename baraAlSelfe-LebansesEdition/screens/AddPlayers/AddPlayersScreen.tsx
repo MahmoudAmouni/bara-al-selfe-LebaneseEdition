@@ -21,10 +21,10 @@ export default function AddPlayersScreen() {
   const router = useRouter();
   const { categoryId } = useLocalSearchParams<{ categoryId: CategoryKey }>();
   const insets = useSafeAreaInsets();
-  const { startGame } = useGameStore();
+  const { startGame, players: storedPlayers } = useGameStore();
   
   const [playerName, setPlayerName] = useState('');
-  const [players, setPlayers] = useState<string[]>([]);
+  const [players, setPlayers] = useState<string[]>(storedPlayers ?? []);
   
   const categoryInfo = categoryId ? CATEGORIES_CONFIG[categoryId] : null;
 
