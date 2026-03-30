@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGameStore } from '@/store/useGameStore';
 import { styles } from './GameRevealScreen.styles';
 
 export default function GameRevealScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { 
     players, 
     currentPlayerIndex, 
@@ -24,10 +26,7 @@ export default function GameRevealScreen() {
     if (isRoleRevealed) {
       const hasMore = nextPlayer();
       if (!hasMore) {
-        // Future: Navigate to Actual Game Screen
-        Alert.alert('تم!', 'كل اللاعبين شافوا أدوارهم. خلينا نبلش!', [
-          { text: 'أوكي', onPress: () => router.replace('/') }
-        ]);
+        router.replace('/question-phase' as never);
       }
     } else {
       toggleReveal();
@@ -35,7 +34,7 @@ export default function GameRevealScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       <View style={styles.content}>
         <View style={styles.card}>
           {!isRoleRevealed ? (
@@ -62,14 +61,18 @@ export default function GameRevealScreen() {
         </View>
       </View>
 
-      <View style={styles.footer}>
+      <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
         <TouchableOpacity 
           style={styles.actionButton} 
           onPress={handleNext}
           activeOpacity={0.8}
         >
           <Text style={styles.actionButtonText}>
-            {!isRoleRevealed ? `أنا ${currentPlayer}` : isLastPlayer ? 'بلش اللعبة!' : 'اللاعب التالي'}
+            {!isRoleRevealed
+              ? `أنا ${currentPlayer}`
+              : isLastPlayer
+              ? 'بلش الأسئلة! 🎤'
+              : 'اللاعب التالي'}
           </Text>
         </TouchableOpacity>
         
@@ -85,5 +88,3 @@ export default function GameRevealScreen() {
     </View>
   );
 }
-
-import { Alert } from 'react-native';
