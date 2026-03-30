@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Pressable, Alert } from 'react-native';
+import { View, Text, Pressable, Alert, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGameStore } from '@/store/useGameStore';
@@ -30,7 +30,7 @@ export default function QuestionPhaseScreen() {
   const availableTargets = getAvailableTargets();
 
   const handleRoundEnd = () => {
-    Alert.alert('تصويت!', 'انتهت جولات الأسئلة كلها. وقت التصويت!', [
+    Alert.alert('تصويت!', 'وقت التصويت! اختاروا مين برا السالفة.', [
       { text: 'حسناً', onPress: () => router.replace('/' as never) }
     ]);
   };
@@ -42,16 +42,16 @@ export default function QuestionPhaseScreen() {
   if (phaseOver) {
     return (
       <View style={styles.container}>
-        <View style={[styles.endOfRoundContainer]}>
+        <View style={styles.endOfRoundContainer}>
           <Text style={styles.endIcon}>🗳️</Text>
           <Text style={styles.endTitle}>انتهت الأسئلة!</Text>
-          <Text style={styles.endSubtitle}>
-            انتهت كل جولات الأسئلة.{'\n'}حان وقت التصويت على من هو برا السالفة!
-          </Text>
-        </View>
-        <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
-          <Pressable style={styles.actionButton} onPress={handleRoundEnd}>
-            <Text style={styles.actionButtonText}>للتصويت !</Text>
+          <Text style={styles.endSubtitle}>حان وقت التصويت</Text>
+          
+          <Pressable 
+            style={[styles.actionButton, { marginTop: 40, width: '80%' }]} 
+            onPress={handleRoundEnd}
+          >
+            <Text style={styles.actionButtonText}>صوّت الآن !</Text>
           </Pressable>
         </View>
       </View>
@@ -91,7 +91,11 @@ export default function QuestionPhaseScreen() {
         </Text>
       </View>
 
-      <View style={styles.content}>
+      <ScrollView 
+        style={styles.content}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+      >
         {isGuidedRound ? (
           <View style={styles.endOfRoundContainer}>
             <Text style={styles.endIcon}>💬</Text>
@@ -104,10 +108,13 @@ export default function QuestionPhaseScreen() {
           <>
             <View style={{ flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <Text style={styles.sectionLabel}>اختار مين تسأل:</Text>
-              <Text style={{ fontSize: 14, color: '#D84315', fontWeight: 'bold' }}>
-                باقي {remaining} أسئلة حد أقصى
-              </Text>
+              <View style={{ backgroundColor: remaining <= 1 ? '#FFEBEE' : '#E8F5E9', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 }}>
+                <Text style={{ fontSize: 13, color: remaining <= 1 ? '#D32F2F' : '#2E7D32', fontWeight: 'bold' }}>
+                  باقي {remaining} أسئلة
+                </Text>
+              </View>
             </View>
+            
             {availableTargets.map((targetIndex) => (
               <Pressable
                 key={targetIndex}
@@ -125,9 +132,9 @@ export default function QuestionPhaseScreen() {
             ))}
           </>
         )}
-      </View>
+      </ScrollView>
 
-      <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
+      <View style={[styles.footer, { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#FFF3E0', paddingBottom: insets.bottom + 10 }]}>
         {isGuidedRound ? (
           <Pressable style={styles.actionButton} onPress={nextGuidedStep}>
             <Text style={styles.actionButtonText}>التالي</Text>
@@ -135,7 +142,7 @@ export default function QuestionPhaseScreen() {
         ) : (
           canEndEarly() && (
             <Pressable 
-              style={[styles.actionButton, { backgroundColor: '#FF6B6B' }]} 
+              style={[styles.actionButton, { backgroundColor: '#D84315' }]} 
               onPress={forceEnd}
             >
               <Text style={styles.actionButtonText}>إنهاء والتصويت 🗳️</Text>
