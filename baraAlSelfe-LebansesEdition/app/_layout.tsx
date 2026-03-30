@@ -10,6 +10,8 @@ export default function RootLayout() {
         <Stack.Screen name="add-players" options={{ headerShown: false }} />
         <Stack.Screen name="game-reveal" options={{ headerShown: false }} />
         <Stack.Screen name="question-phase" options={{ headerShown: false }} />
+        <Stack.Screen name="results" options={{ headerShown: false }} />
+        <Stack.Screen name="voting" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />
     </>
