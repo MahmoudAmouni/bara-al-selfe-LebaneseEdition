@@ -28,6 +28,7 @@ export default function QuestionPhaseScreen() {
   const phaseOver = isQuestionPhaseOver();
   const isGuidedRound = round === 1;
   const availableTargets = getAvailableTargets();
+  const showVoteButton = canEndEarly();
 
   const handleRoundEnd = () => {
     Alert.alert('تصويت!', 'وقت التصويت! اختاروا مين برا السالفة.', [
@@ -93,7 +94,7 @@ export default function QuestionPhaseScreen() {
 
       <ScrollView 
         style={styles.content}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
       >
         {isGuidedRound ? (
@@ -134,22 +135,22 @@ export default function QuestionPhaseScreen() {
         )}
       </ScrollView>
 
-      <View style={[styles.footer, { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#FFF3E0', paddingBottom: insets.bottom + 10 }]}>
-        {isGuidedRound ? (
-          <Pressable style={styles.actionButton} onPress={nextGuidedStep}>
-            <Text style={styles.actionButtonText}>التالي</Text>
-          </Pressable>
-        ) : (
-          canEndEarly() && (
+      {(isGuidedRound || showVoteButton) && (
+        <View style={[styles.footer, { paddingBottom: insets.bottom + 10 }]}>
+          {isGuidedRound ? (
+            <Pressable style={styles.actionButton} onPress={nextGuidedStep}>
+              <Text style={styles.actionButtonText}>التالي</Text>
+            </Pressable>
+          ) : (
             <Pressable 
               style={[styles.actionButton, { backgroundColor: '#D84315' }]} 
               onPress={forceEnd}
             >
               <Text style={styles.actionButtonText}>إنهاء والتصويت 🗳️</Text>
             </Pressable>
-          )
-        )}
-      </View>
+          )}
+        </View>
+      )}
     </View>
   );
 }
