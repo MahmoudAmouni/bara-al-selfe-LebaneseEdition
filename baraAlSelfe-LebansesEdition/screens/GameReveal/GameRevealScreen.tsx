@@ -76,15 +76,7 @@ export default function GameRevealScreen() {
           </Text>
         </TouchableOpacity>
         
-        {isRoleRevealed && !isLastPlayer && (
-          <TouchableOpacity 
-            style={[styles.actionButton, styles.secondaryButton]} 
-            onPress={toggleReveal}
-          >
-            <Text style={[styles.actionButtonText, styles.secondaryButtonText]}>إخفي الكلمة</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+    </View>
     </View>
   );
 }
