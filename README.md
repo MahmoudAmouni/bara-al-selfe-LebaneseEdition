@@ -64,5 +64,4 @@ npx expo start
 
 Developed with ❤️ by **Mahmoud Amouni**
 
----
 
