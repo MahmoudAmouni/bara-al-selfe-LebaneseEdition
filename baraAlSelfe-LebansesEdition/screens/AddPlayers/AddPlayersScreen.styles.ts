@@ -1,13 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: '#FAFAFA',
   },
   content: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 16,
   },
   playerList: {
     flex: 1,
@@ -15,38 +16,53 @@ export const styles = StyleSheet.create({
   emptyContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
+    marginTop: 60,
   },
   emptyText: {
     fontSize: 16,
-    color: '#8D6E63',
+    color: '#A0AEC0',
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 28,
+    fontWeight: '600',
   },
   footer: {
     padding: 20,
-    backgroundColor: '#FFF3E0',
+    backgroundColor: '#FAFAFA',
   },
   nextButton: {
-    backgroundColor: '#D84315',
-    borderRadius: 15,
-    paddingVertical: 16,
+    backgroundColor: '#ED8936',
+    borderRadius: 20,
+    paddingVertical: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#ED8936',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.35,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 6,
+        shadowColor: '#ED8936',
+      },
+      web: {
+        boxShadow: '0px 6px 16px rgba(237, 137, 54, 0.4)',
+      },
+    }),
   },
   nextButtonDisabled: {
-    backgroundColor: '#BDBDBD',
-    elevation: 0,
-    shadowOpacity: 0,
+    backgroundColor: '#E2E8F0',
+    ...Platform.select({
+      ios: { shadowOpacity: 0 },
+      android: { elevation: 0 },
+      web: { boxShadow: 'none' },
+    }),
   },
   nextButtonText: {
     color: '#FFF',
-    fontSize: 20,
-    fontWeight: '800',
+    fontSize: 22,
+    fontWeight: '900',
+    letterSpacing: 0.5,
   },
 });

@@ -1,45 +1,65 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export const styles = StyleSheet.create({
   playerItem: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FFF',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#FFE0B2',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 14,
+    marginBottom: 12,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
+      },
+      android: {
+        elevation: 2,
+      },
+      web: {
+        boxShadow: '0px 4px 12px rgba(0,0,0,0.04)',
+      },
+    }),
   },
   playerInfo: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
   },
   playerNumber: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#FFE0B2',
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#ED8936', // Vibrant orange
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 12,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#ED8936',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+      },
+      android: { elevation: 2 },
+      web: { boxShadow: '0px 2px 8px rgba(237, 137, 54, 0.3)' },
+    })
   },
   playerNumberText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#D84315',
+    fontSize: 16,
+    fontWeight: '900',
+    color: '#FFFFFF',
   },
   playerName: {
     fontSize: 18,
-    color: '#4E342E',
-    fontWeight: '600',
+    color: '#2D3748',
+    fontWeight: '700',
   },
   removeButton: {
-    padding: 8,
-  },
-  removeButtonText: {
-    fontSize: 18,
-    color: '#FF6B6B',
+    padding: 6,
+    borderRadius: 20,
+    backgroundColor: '#FFF5F5',
   },
 });

@@ -6,7 +6,8 @@ import {
   KeyboardAvoidingView, 
   Platform,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -62,6 +63,7 @@ export default function AddPlayersScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
+      <StatusBar barStyle="dark-content" backgroundColor="#FAFAFA" />
       <AddPlayersHeader 
         title="إضافة لاعبين"
         categoryTitle={categoryInfo?.title}
