@@ -38,6 +38,22 @@ The game features thousands of words across these specific Lebanese categories:
 
 ---
 
+## 📁 Project Structure / هيكلية المشروع
+```text
+.
+├── baraAlSelfe-LebansesEdition/  # Main App Source
+│   ├── app/                      # Expo Router (Pages)
+│   ├── components/               # Reusable Components
+│   ├── screens/                  # Feature-specific Screens
+│   ├── store/                    # Zustand State Management
+│   ├── data/                     # Lebanese Game Data (Categories)
+│   └── assets/                   # Images, Fonts, and Graphics
+├── README.md                     # Project Documentation
+└── LICENSE                       # MIT License
+```
+
+---
+
 ## 🚀 Tech Stack / تقنيات المشروع
 - **Framework:** [Expo](https://expo.dev/) (React Native)
 - **Navigation:** [Expo Router](https://docs.expo.dev/router/introduction/) (File-based routing)
@@ -61,6 +77,7 @@ The game features thousands of words across these specific Lebanese categories:
    ```
 2. **Install dependencies:**
    ```bash
+   cd baraAlSelfe-LebansesEdition
    npm install
    ```
 3. **Start the development server:**
@@ -77,4 +94,4 @@ Developed with ❤️ by **Mahmoud Amouni**.
 ---
 
 ## 📜 License
-This project is for personal use and entertainment. All rights reserved to the developer.
+This project is licensed under the [MIT License](LICENSE).
