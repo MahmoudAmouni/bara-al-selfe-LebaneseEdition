@@ -32,7 +32,7 @@
 - Works completely offline
 - Support for 3 to 10+ players
 - Premium design with smooth animations
-- Thousands of words across multiple categories
+- Hundreds of words across multiple categories
 
 ---
 
@@ -58,10 +58,5 @@ npx expo start
 4. Push to the branch: `git push origin feature/new-category`
 5. Open a Pull Request
 
----
-
-## 👤 Credits
-
-Developed with ❤️ by **Mahmoud Amouni**
 
 
