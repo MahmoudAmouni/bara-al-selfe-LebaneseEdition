@@ -33,15 +33,16 @@ interface GameState {
   isRoleRevealed: boolean;
   gameStarted: boolean;
 
-  // Question Phase State
   round: number;
   guidedPairs: number[][];
   currentStep: number;
   
-  // Free Choice State
   currentAskerIndex: number;
   previousAskerIndex: number | null;
   round2QuestionCount: number;
+  votes: number[]; 
+  currentVoterIndex: number;
+  isVoteRevealed: boolean;
 
   startGame: (players: string[], categoryId: CategoryKey) => void;
   toggleReveal: () => void;
@@ -55,6 +56,10 @@ interface GameState {
   canEndEarly: () => boolean;
   endQuestionPhaseEarly: () => void;
   isQuestionPhaseOver: () => boolean;
+
+  initVotingPhase: () => void;
+  toggleVoteReveal: () => void;
+  submitVote: (targetIndex: number) => boolean; 
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -72,6 +77,10 @@ export const useGameStore = create<GameState>((set, get) => ({
   currentAskerIndex: 0,
   previousAskerIndex: null,
   round2QuestionCount: 0,
+
+  votes: [],
+  currentVoterIndex: 0,
+  isVoteRevealed: false,
 
   startGame: (players, categoryId) => {
     const categoryWords = categoriesData[categoryId];
@@ -102,6 +111,10 @@ export const useGameStore = create<GameState>((set, get) => ({
       currentAskerIndex: S[0],
       previousAskerIndex: null,
       round2QuestionCount: 0,
+
+      votes: [],
+      currentVoterIndex: 0,
+      isVoteRevealed: false,
     });
   },
 
@@ -122,7 +135,6 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
 
   initQuestionPhase: () => {
-    // Pairs are now pre-generated in startGame for stability
   },
 
   nextGuidedStep: () => {
@@ -156,11 +168,15 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
 
   getAvailableTargets: () => {
-    const { players, currentAskerIndex, previousAskerIndex, round } = get();
-    if (round !== 2) return [];
+    const { players, currentAskerIndex, previousAskerIndex, round, currentVoterIndex } = get();
+    if (round === 2) {
+      return players
+        .map((_, index) => index)
+        .filter((index) => index !== currentAskerIndex && index !== previousAskerIndex);
+    }
     return players
       .map((_, index) => index)
-      .filter((index) => index !== currentAskerIndex && index !== previousAskerIndex);
+      .filter((index) => index !== currentVoterIndex);
   },
 
   canEndEarly: () => {
@@ -177,9 +193,38 @@ export const useGameStore = create<GameState>((set, get) => ({
     return round === 3;
   },
 
+  initVotingPhase: () => {
+    set({
+      currentVoterIndex: 0,
+      isVoteRevealed: false,
+      votes: [],
+    });
+  },
+
+  toggleVoteReveal: () => {
+    set((state) => ({ isVoteRevealed: !state.isVoteRevealed }));
+  },
+
+  submitVote: (targetIndex) => {
+    const { votes, currentVoterIndex, players } = get();
+    const newVotes = [...votes];
+    newVotes[currentVoterIndex] = targetIndex;
+    
+    if (currentVoterIndex < players.length - 1) {
+      set({
+        votes: newVotes,
+        currentVoterIndex: currentVoterIndex + 1,
+        isVoteRevealed: false,
+      });
+      return true;
+    } else {
+      set({ votes: newVotes });
+      return false;
+    }
+  },
+
   resetGame: () => {
     set({
-      players: [],
       categoryId: null,
       secretWord: '',
       spyIndex: -1,
@@ -193,6 +238,10 @@ export const useGameStore = create<GameState>((set, get) => ({
       currentAskerIndex: 0,
       previousAskerIndex: null,
       round2QuestionCount: 0,
+
+      votes: [],
+      currentVoterIndex: 0,
+      isVoteRevealed: false,
     });
   },
 }));

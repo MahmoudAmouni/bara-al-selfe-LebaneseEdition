@@ -7,17 +7,16 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 32,
+    padding: 32,
     width: '100%',
-    padding: 40,
     alignItems: 'center',
-    justifyContent: 'center',
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -44,17 +43,17 @@ export const styles = StyleSheet.create({
     fontSize: 46,
     fontWeight: '900',
     color: '#2D3748',
-    textAlign: 'center',
     marginBottom: 32,
+    textAlign: 'center',
   },
-  iconContainer: {
+  voterIconContainer: {
     width: 120,
     height: 120,
     borderRadius: 60,
     backgroundColor: '#FFEDD5',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
     ...Platform.select({
       ios: {
         shadowColor: '#ED8936',
@@ -64,66 +63,85 @@ export const styles = StyleSheet.create({
       },
       android: {
         elevation: 6,
-        shadowColor: '#ED8936',
-      },
-      web: {
-        boxShadow: '0px 6px 16px rgba(237, 137, 54, 0.3)',
       },
     }),
   },
-  spyIconContainer: {
-    backgroundColor: '#FED7D7',
-    ...Platform.select({
-      ios: { shadowColor: '#E53E3E' },
-      android: { shadowColor: '#E53E3E' },
-      web: { boxShadow: '0px 6px 16px rgba(229, 62, 62, 0.3)' },
-    }),
-  },
-  revealIcon: {
+  voterIcon: {
     fontSize: 64,
   },
-  statusText: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: '#C05621',
+  votingTitle: {
+    fontSize: 32,
+    fontWeight: '900',
+    color: '#2D3748',
+    marginBottom: 8,
     textAlign: 'center',
+  },
+  votingSubtitle: {
+    fontSize: 18,
+    color: '#ED8936',
+    marginBottom: 32,
+    textAlign: 'center',
+    fontWeight: '800',
+  },
+  grid: {
+    width: '100%',
+    flexDirection: 'row-reverse',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  playerCard: {
+    width: '47%',
+    backgroundColor: '#F8FAFC',
+    borderRadius: 24,
+    paddingHorizontal: 12,
+    paddingVertical: 20,
+    marginBottom: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#E2E8F0',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.04,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 3,
+      },
+      web: {
+        boxShadow: '0px 4px 10px rgba(0,0,0,0.04)',
+      },
+    }),
+  },
+  playerCardPressed: {
+    backgroundColor: '#F7FAFC',
+    borderColor: '#ED8936',
+    transform: [{ scale: 0.98 }],
+  },
+  playerEmoji: {
+    fontSize: 32,
     marginBottom: 8,
   },
-  secretWordCard: {
-    backgroundColor: '#FFEDD5',
-    paddingHorizontal: 36,
-    paddingVertical: 20,
-    borderRadius: 24,
-    marginTop: 16,
-    borderWidth: 2,
-    borderColor: '#FBD38D',
-    width: '100%',
-    alignItems: 'center',
-  },
-  secretWordText: {
-    fontSize: 40,
-    fontWeight: '900',
-    color: '#DD6B20',
+  targetPlayerName: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#2D3748',
     textAlign: 'center',
+    marginTop: 4,
   },
-  spyText: {
-    fontSize: 42,
-    fontWeight: '900',
-    color: '#E53E3E',
-    textAlign: 'center',
-    marginTop: 16,
-  },
-  spySubText: {
+  voterStepText: {
     fontSize: 18,
-    fontWeight: '700',
-    color: '#718096',
-    textAlign: 'center',
-    marginTop: 12,
+    fontWeight: '800',
+    color: '#C05621',
+    marginBottom: 16,
   },
   footer: {
     width: '100%',
     paddingHorizontal: 24,
     paddingBottom: 40,
+    backgroundColor: '#FAFAFA',
   },
   actionButton: {
     backgroundColor: '#ED8936',
@@ -133,7 +151,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     ...Platform.select({
-       ios: {
+      ios: {
         shadowColor: '#ED8936',
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.3,

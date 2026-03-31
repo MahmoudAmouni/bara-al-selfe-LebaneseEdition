@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { styles } from './PlayerListItem.styles';
 
 interface PlayerListItemProps {
@@ -17,8 +18,12 @@ export const PlayerListItem = ({ name, index, onRemove }: PlayerListItemProps) =
         </View>
         <Text style={styles.playerName}>{name}</Text>
       </View>
-      <TouchableOpacity onPress={onRemove} style={styles.removeButton}>
-        <Text style={styles.removeButtonText}>✕</Text>
+      <TouchableOpacity 
+        onPress={onRemove} 
+        style={styles.removeButton}
+        activeOpacity={0.6}
+      >
+        <Ionicons name="trash-outline" size={22} color="#E53E3E" />
       </TouchableOpacity>
     </View>
   );

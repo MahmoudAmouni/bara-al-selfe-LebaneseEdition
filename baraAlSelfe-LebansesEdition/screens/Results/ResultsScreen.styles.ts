@@ -1,0 +1,217 @@
+import { StyleSheet, Platform } from 'react-native';
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FAFAFA',
+  },
+  content: {
+    flex: 1,
+    padding: 24,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#718096',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 20,
+    color: '#2D3748',
+    marginBottom: 32,
+    textAlign: 'center',
+    fontWeight: '900',
+  },
+  resultCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 32,
+    padding: 32,
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 24,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.08,
+        shadowRadius: 20,
+      },
+      android: {
+        elevation: 8,
+      },
+      web: {
+        boxShadow: '0px 10px 30px rgba(0,0,0,0.08)',
+      },
+    }),
+  },
+  statusIconContainer: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.1,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
+  },
+  statusIcon: {
+    fontSize: 80,
+  },
+  statusTitle: {
+    fontSize: 38,
+    fontWeight: '900',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  statusText: {
+    fontSize: 18,
+    color: '#4A5568',
+    textAlign: 'center',
+    lineHeight: 28,
+    fontWeight: '600',
+    marginBottom: 24,
+  },
+  spyReveal: {
+    padding: 24,
+    backgroundColor: '#F7FAFC',
+    borderRadius: 24,
+    width: '100%',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+  },
+  spyLabel: {
+    fontSize: 14,
+    color: '#718096',
+    fontWeight: '800',
+    marginBottom: 8,
+    textTransform: 'uppercase',
+  },
+  spyName: {
+    fontSize: 32,
+    fontWeight: '900',
+    color: '#2D3748',
+    marginBottom: 4,
+  },
+  wordReveal: {
+    fontSize: 18,
+    color: '#ED8936',
+    marginTop: 8,
+    fontWeight: '800',
+  },
+  votingTable: {
+    width: '100%',
+    marginBottom: 32,
+  },
+  voteSectionTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#4A5568',
+    textAlign: 'right',
+    marginBottom: 16,
+  },
+  voteRow: {
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.04,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  votedName: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#2D3748',
+  },
+  voteCountCount: {
+    fontSize: 20,
+    fontWeight: '900',
+    color: '#ED8936',
+  },
+  punishmentCard: {
+    backgroundColor: '#FFF5F5',
+    borderRadius: 28,
+    padding: 28,
+    width: '100%',
+    borderWidth: 2,
+    borderColor: '#FED7D7',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  punishmentTitle: {
+    fontSize: 20,
+    fontWeight: '900',
+    color: '#E53E3E',
+    marginBottom: 12,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  punishmentText: {
+    fontSize: 22,
+    color: '#9B2C2C',
+    textAlign: 'center',
+    fontWeight: '800',
+    lineHeight: 32,
+  },
+  punishmentTarget: {
+    marginTop: 16,
+    fontSize: 14,
+    color: '#C53030',
+    fontWeight: '800',
+    backgroundColor: '#FFE4E6',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  footer: {
+    paddingHorizontal: 24,
+    paddingBottom: 40,
+    backgroundColor: '#FAFAFA',
+  },
+  actionButton: {
+    backgroundColor: '#2D3748',
+    borderRadius: 24,
+    paddingVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
+  },
+  actionButtonText: {
+    color: '#FFFFFF',
+    fontSize: 22,
+    fontWeight: '800',
+  },
+});

@@ -1,9 +1,17 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StatusBar } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGameStore } from '@/store/useGameStore';
 import { styles } from './GameRevealScreen.styles';
+import Animated, { 
+  FadeIn, 
+  FadeInDown, 
+  ZoomIn, 
+  Layout,
+  FadeOut
+} from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
 
 export default function GameRevealScreen() {
   const router = useRouter();
@@ -22,7 +30,10 @@ export default function GameRevealScreen() {
   const isSpy = currentPlayerIndex === spyIndex;
   const isLastPlayer = currentPlayerIndex === players.length - 1;
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // Provide tactile feedback
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
     if (isRoleRevealed) {
       const hasMore = nextPlayer();
       if (!hasMore) {
@@ -34,31 +45,69 @@ export default function GameRevealScreen() {
   };
 
   return (
-    <View style={[styles.container]}>
-      <View style={styles.content}>
-        <View style={styles.card}>
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      
+      {/* Header / Progress */}
+      <View style={[styles.content, { paddingTop: insets.top + 20 }]}>
+        <Animated.View 
+          entering={FadeInDown.delay(200).duration(500)}
+          style={{ alignItems: 'center', marginBottom: 20 }}
+        >
+          <Text style={styles.statusText}>
+            اللاعب {currentPlayerIndex + 1} من {players.length}
+          </Text>
+        </Animated.View>
+
+        <Animated.View 
+          key={isRoleRevealed ? 'revealed' : 'instruction'}
+          entering={ZoomIn.duration(400)}
+          exiting={FadeOut.duration(200)}
+          layout={Layout.springify()}
+          style={styles.card}
+        >
           {!isRoleRevealed ? (
             <>
               <Text style={styles.instructionTitle}>مرّق التلفون لـ</Text>
               <Text style={styles.playerName}>{currentPlayer}</Text>
-              <Text style={styles.revealIcon}>📱</Text>
+              
+              <Animated.View 
+                entering={ZoomIn.delay(300).springify()}
+                style={styles.iconContainer}
+              >
+                <Text style={styles.revealIcon}>📱</Text>
+              </Animated.View>
+              
+              <Text style={styles.instructionTitle}>بس توصل، إكبس الزر تحت 👇</Text>
             </>
           ) : (
             <>
               <Text style={styles.instructionTitle}>{currentPlayer}، إنت</Text>
-              <Text style={styles.revealIcon}>{isSpy ? '🕵️‍♂️' : '💡'}</Text>
+              
+              <Animated.View 
+                entering={ZoomIn.duration(600).springify()}
+                style={[styles.iconContainer, isSpy && styles.spyIconContainer]}
+              >
+                <Text style={styles.revealIcon}>{isSpy ? '🕵️‍♂️' : '💡'}</Text>
+              </Animated.View>
               
               {isSpy ? (
-                <Text style={styles.spyText}>برا السالفة!</Text>
+                <View style={{ alignItems: 'center' }}>
+                  <Text style={styles.spyText}>برا السالفة!</Text>
+                  <Text style={styles.spySubText}>حاول تعرف عن شو عم بيحكوا بدون ما يكشفوك! 🤫</Text>
+                </View>
               ) : (
-                <View style={styles.secretWordCard}>
+                <Animated.View 
+                  entering={FadeInDown.delay(200)}
+                  style={styles.secretWordCard}
+                >
                   <Text style={styles.statusText}>الكلمة السرية هي:</Text>
                   <Text style={styles.secretWordText}>{secretWord}</Text>
-                </View>
+                </Animated.View>
               )}
             </>
           )}
-        </View>
+        </Animated.View>
       </View>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
@@ -75,16 +124,8 @@ export default function GameRevealScreen() {
               : 'اللاعب التالي'}
           </Text>
         </TouchableOpacity>
-        
-        {isRoleRevealed && !isLastPlayer && (
-          <TouchableOpacity 
-            style={[styles.actionButton, styles.secondaryButton]} 
-            onPress={toggleReveal}
-          >
-            <Text style={[styles.actionButtonText, styles.secondaryButtonText]}>إخفي الكلمة</Text>
-          </TouchableOpacity>
-        )}
       </View>
     </View>
   );
 }
+

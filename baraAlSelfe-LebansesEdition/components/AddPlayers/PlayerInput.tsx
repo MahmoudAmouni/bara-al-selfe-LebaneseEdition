@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { styles } from './PlayerInput.styles';
 
 interface PlayerInputProps {
@@ -10,22 +11,26 @@ interface PlayerInputProps {
 }
 
 export const PlayerInput = ({ value, onChangeText, onAdd, placeholder }: PlayerInputProps) => {
+  const isDisabled = value.trim().length === 0;
+
   return (
     <View style={styles.inputContainer}>
       <TextInput
         style={styles.input}
         placeholder={placeholder}
-        placeholderTextColor="#8D6E63"
+        placeholderTextColor="#A0AEC0"
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={onAdd}
         returnKeyType="done"
       />
       <TouchableOpacity 
-        style={styles.addButton} 
+        style={[styles.addButton, isDisabled && styles.addButtonDisabled]} 
         onPress={onAdd}
+        activeOpacity={0.7}
+        disabled={isDisabled}
       >
-        <Text style={styles.addButtonText}>+</Text>
+        <Ionicons name="add" size={28} color={isDisabled ? "#CBD5E0" : "#FFFFFF"} />
       </TouchableOpacity>
     </View>
   );

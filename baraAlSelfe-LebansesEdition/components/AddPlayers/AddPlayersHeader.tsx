@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { styles } from './AddPlayersHeader.styles';
 
 interface AddPlayersHeaderProps {
@@ -15,16 +16,17 @@ export const AddPlayersHeader = ({ title, categoryTitle, onBack }: AddPlayersHea
   return (
     <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
       <TouchableOpacity onPress={onBack} style={styles.backButton}>
-        <Text style={styles.backButtonText}>← رجوع</Text>
+        <Ionicons name="chevron-forward" size={26} color="#2D3748" />
       </TouchableOpacity>
       
-      <Text style={styles.title}>{title}</Text>
-      
-      {categoryTitle && (
-        <View style={styles.categoryBadge}>
-          <Text style={styles.categoryBadgeText}>الفئة: {categoryTitle}</Text>
-        </View>
-      )}
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{title}</Text>
+        {categoryTitle && (
+          <View style={styles.categoryBadge}>
+            <Text style={styles.categoryBadgeText}>{categoryTitle}</Text>
+          </View>
+        )}
+      </View>
     </View>
   );
 };

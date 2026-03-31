@@ -1,44 +1,55 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export const styles = StyleSheet.create({
   header: {
-    paddingBottom: 20,
+    paddingBottom: 16,
     paddingHorizontal: 24,
-    backgroundColor: '#FFE0B2',
-    borderBottomWidth: 1,
-    borderBottomColor: '#FFCC80',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    backgroundColor: '#FAFAFA',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    zIndex: 10,
   },
   backButton: {
-    marginBottom: 8,
-    paddingVertical: 8,
+    padding: 12,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 3,
+      },
+      web: {
+        boxShadow: '0px 4px 12px rgba(0,0,0,0.06)',
+      },
+    }),
   },
-  backButtonText: {
-    fontSize: 18,
-    color: '#D84315',
-    fontWeight: 'bold',
+  titleContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
   },
   title: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: '#D84315',
-    textAlign: 'right',
+    fontSize: 28,
+    fontWeight: '900',
+    color: '#2D3748',
   },
   categoryBadge: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#FF6B6B',
+    backgroundColor: '#FFF0F5',
     paddingHorizontal: 12,
     paddingVertical: 4,
-    borderRadius: 12,
-    marginTop: 8,
+    borderRadius: 16,
+    marginTop: 6,
+    borderWidth: 1,
+    borderColor: '#FED7E2',
   },
   categoryBadgeText: {
-    color: '#FFF',
+    color: '#D53F8C',
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '800',
   },
 });

@@ -20,19 +20,21 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFE0B2" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FAFAFA" />
       
-      <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
+      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
         <Text style={styles.title}>برا السالفة</Text>
-        <Text style={styles.subtitle}>النسخة اللبنانية</Text>
-        <Text style={styles.instruction}>إختار الفئة لتبلش اللعب!</Text>
+        <View style={styles.subtitleContainer}>
+          <Text style={styles.subtitle}>النسخة اللبنانية</Text>
+        </View>
+        <Text style={styles.instruction}>إختار الفئة لتبلش اللعب! 🎲</Text>
       </View>
 
       <FlatList
         data={categories}
         keyExtractor={(item) => item.id}
         numColumns={2}
-        contentContainerStyle={[styles.listContent, { paddingBottom: insets.bottom + 16 }]}
+        contentContainerStyle={[styles.listContent, { paddingBottom: insets.bottom + 24 }]}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <CategoryCard 

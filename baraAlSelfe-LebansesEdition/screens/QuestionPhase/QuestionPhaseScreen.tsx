@@ -1,59 +1,84 @@
-import React, { useEffect } from 'react';
-import { View, Text, Pressable, Alert } from 'react-native';
+import React from 'react';
+import { View, Text, Pressable, ScrollView, StatusBar } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGameStore } from '@/store/useGameStore';
 import { styles } from './QuestionPhaseScreen.styles';
+import Animated, { 
+  FadeIn, 
+  FadeInDown, 
+  ZoomIn, 
+  FadeOut,
+  Layout
+} from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
 
 const PLAYER_EMOJIS = ['🧑', '👩', '🧔', '👱', '🧕', '👨', '🧒', '👧'];
 
 export default function QuestionPhaseScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const {
-    players,
-    round,
-    currentStep,
-    guidedPairs,
-    currentAskerIndex,
-    round2QuestionCount,
-    nextGuidedStep,
-    askPlayer,
-    getAvailableTargets,
-    canEndEarly,
-    endQuestionPhaseEarly,
-    isQuestionPhaseOver,
-  } = useGameStore();
 
-  const phaseOver = isQuestionPhaseOver();
+  const players = useGameStore((s) => s.players);
+  const round = useGameStore((s) => s.round);
+  const currentStep = useGameStore((s) => s.currentStep);
+  const guidedPairs = useGameStore((s) => s.guidedPairs);
+  const currentAskerIndex = useGameStore((s) => s.currentAskerIndex);
+  const previousAskerIndex = useGameStore((s) => s.previousAskerIndex);
+  const round2QuestionCount = useGameStore((s) => s.round2QuestionCount);
+  const nextGuidedStep = useGameStore((s) => s.nextGuidedStep);
+  const askPlayer = useGameStore((s) => s.askPlayer);
+  const endQuestionPhaseEarly = useGameStore((s) => s.endQuestionPhaseEarly);
+
+  const n = players.length;
   const isGuidedRound = round === 1;
-  const availableTargets = getAvailableTargets();
 
-  const handleRoundEnd = () => {
-    Alert.alert('تصويت!', 'انتهت جولات الأسئلة كلها. وقت التصويت!', [
-      { text: 'حسناً', onPress: () => router.replace('/' as never) }
-    ]);
+  const minRequired = Math.min(1, n - 1);
+  const maxLimit = n + Math.floor(n / 2);
+  const remaining = Math.max(0, maxLimit - round2QuestionCount);
+  const wordsNeeded = Math.max(0, minRequired - round2QuestionCount);
+  const canVote = round === 2 && round2QuestionCount >= minRequired;
+
+  const phaseOver = round === 3 || remaining <= 0;
+
+  const availableTargets = players
+    .map((_, index) => index)
+    .filter((index) => {
+      if (round === 2) {
+        return index !== currentAskerIndex && index !== previousAskerIndex;
+      }
+      return false;
+    });
+
+  const handleNextStep = async (callback: () => void) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    callback();
   };
 
-  const forceEnd = () => {
-    endQuestionPhaseEarly();
+  const handleRoundEnd = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    router.replace('/voting' as never);
   };
 
   if (phaseOver) {
     return (
       <View style={styles.container}>
-        <View style={[styles.endOfRoundContainer]}>
+        <StatusBar barStyle="dark-content" />
+        <Animated.View 
+          entering={FadeIn.duration(800)}
+          style={styles.endOfRoundContainer}
+        >
           <Text style={styles.endIcon}>🗳️</Text>
           <Text style={styles.endTitle}>انتهت الأسئلة!</Text>
-          <Text style={styles.endSubtitle}>
-            انتهت كل جولات الأسئلة.{'\n'}حان وقت التصويت على من هو برا السالفة!
-          </Text>
-        </View>
-        <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
-          <Pressable style={styles.actionButton} onPress={handleRoundEnd}>
-            <Text style={styles.actionButtonText}>للتصويت !</Text>
-          </Pressable>
-        </View>
+          <Text style={styles.endSubtitle}>صارت اللعبة مكشوفة؟{'\n'}حان وقت التصويت</Text>
+          
+          <TouchableOpacity 
+            style={[styles.actionButton, { marginTop: 40, width: '100%' }]}
+            onPress={handleRoundEnd}
+          >
+            <Text style={styles.actionButtonText}>صوّت الآن!</Text>
+          </TouchableOpacity>
+        </Animated.View>
       </View>
     );
   }
@@ -74,75 +99,121 @@ export default function QuestionPhaseScreen() {
     askerName = players[currentAskerIndex];
   }
 
-  const n = players.length;
-  const maxLimit = n + Math.floor(n / 2);
-  const remaining = maxLimit - round2QuestionCount;
-
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      
       <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
-        <View style={styles.roundBadge}>
+        <Animated.View 
+          entering={FadeInDown.delay(100)}
+          style={styles.roundBadge}
+        >
           <Text style={styles.roundBadgeText}>{badgeTitle}</Text>
-        </View>
+        </Animated.View>
+        
         <Text style={styles.headerTitle}>دور السؤال لـ</Text>
-        <Text style={styles.askerName}>{askerName}</Text>
+        <Animated.Text 
+          key={askerName}
+          entering={FadeInDown}
+          style={styles.askerName}
+        >
+          {askerName}
+        </Animated.Text>
+        
         <Text style={styles.headerSubtitle}>
           {isGuidedRound ? `اسأل: ${targetName}` : 'اختار مين تبي تسأل'}
         </Text>
       </View>
 
-      <View style={styles.content}>
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={{ paddingBottom: 24 }}
+        showsVerticalScrollIndicator={false}
+      >
         {isGuidedRound ? (
-          <View style={styles.endOfRoundContainer}>
+          <Animated.View 
+            key={`guided-${currentStep}`}
+            entering={ZoomIn.duration(400)}
+            exiting={FadeOut.duration(200)}
+            style={styles.guidedInstructionCard}
+          >
             <Text style={styles.endIcon}>💬</Text>
             <Text style={styles.endTitle}>{askerName}</Text>
             <Text style={styles.endSubtitle}>
-              اسأل {targetName} سؤال عن الكلمة السرية!
+              اسأل {targetName} سؤال ذكي{'\n'}عن الكلمة السرية!
             </Text>
-          </View>
+          </Animated.View>
         ) : (
-          <>
-            <View style={{ flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <Animated.View entering={FadeIn.duration(500)}>
+            <View style={{ flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <Text style={styles.sectionLabel}>اختار مين تسأل:</Text>
-              <Text style={{ fontSize: 14, color: '#D84315', fontWeight: 'bold' }}>
-                باقي {remaining} أسئلة حد أقصى
-              </Text>
-            </View>
-            {availableTargets.map((targetIndex) => (
-              <Pressable
-                key={targetIndex}
-                style={({ pressed }) => [
-                  styles.targetCard,
-                  pressed && styles.targetCardPressed,
-                ]}
-                onPress={() => askPlayer(targetIndex)}
-              >
-                <Text style={styles.targetEmoji}>
-                  {PLAYER_EMOJIS[targetIndex % PLAYER_EMOJIS.length]}
+              <View style={[
+                styles.counterBadge, 
+                { 
+                  backgroundColor: remaining <= 2 ? '#FED7D7' : '#C6F6D5',
+                  borderColor: remaining <= 2 ? '#FEB2B2' : '#9AE6B4'
+                }
+              ]}>
+                <Text style={[
+                  styles.counterText,
+                  { color: remaining <= 2 ? '#C53030' : '#2F855A' }
+                ]}>
+                  باقي {remaining} أسئلة
                 </Text>
-                <Text style={styles.targetName}>{players[targetIndex]}</Text>
-              </Pressable>
-            ))}
-          </>
-        )}
-      </View>
+              </View>
+            </View>
 
-      <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
+            {availableTargets.map((targetIndex, idx) => (
+              <Animated.View
+                key={targetIndex}
+                entering={FadeInDown.delay(idx * 100)}
+              >
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.targetCard,
+                    pressed && styles.targetCardPressed,
+                  ]}
+                  onPress={() => handleNextStep(() => askPlayer(targetIndex))}
+                >
+                  <Text style={styles.targetEmoji}>
+                    {PLAYER_EMOJIS[targetIndex % PLAYER_EMOJIS.length]}
+                  </Text>
+                  <Text style={styles.targetName}>{players[targetIndex]}</Text>
+                </Pressable>
+              </Animated.View>
+            ))}
+          </Animated.View>
+        )}
+      </ScrollView>
+
+      <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
         {isGuidedRound ? (
-          <Pressable style={styles.actionButton} onPress={nextGuidedStep}>
+          <TouchableOpacity 
+            style={styles.actionButton} 
+            onPress={() => handleNextStep(nextGuidedStep)}
+          >
             <Text style={styles.actionButtonText}>التالي</Text>
-          </Pressable>
+          </TouchableOpacity>
         ) : (
-          canEndEarly() && (
-            <Pressable 
-              style={[styles.actionButton, { backgroundColor: '#FF6B6B' }]} 
-              onPress={forceEnd}
-            >
-              <Text style={styles.actionButtonText}>إنهاء والتصويت 🗳️</Text>
-            </Pressable>
-          )
+          <TouchableOpacity
+            style={[
+              styles.actionButton, 
+              !canVote && styles.actionButtonDisabled
+            ]}
+            onPress={canVote ? () => handleNextStep(endQuestionPhaseEarly) : undefined}
+            disabled={!canVote}
+          >
+            <Text style={styles.actionButtonText}>
+              {canVote
+                ? 'إنهاء والتصويت 🗳️'
+                : `باقي ${wordsNeeded} أسئلة`}
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
     </View>
   );
 }
+
+import { TouchableOpacity } from 'react-native';
+
