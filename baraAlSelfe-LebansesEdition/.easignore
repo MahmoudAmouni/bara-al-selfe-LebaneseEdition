@@ -1,0 +1,4 @@
+# EAS ignore file — prevents these from being uploaded to the build server
+.vscode/
+.expo/
+node_modules/

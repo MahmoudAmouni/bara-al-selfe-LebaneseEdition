@@ -15,10 +15,8 @@
     "android": {
       "package": "com.mahmoudamouni.baraalselfe",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/bara-al-selfe-logo.png",
-        "backgroundImage": "./assets/images/bara-al-selfe-logo.png",
-        "monochromeImage": "./assets/images/bara-al-selfe-logo.png"
+        "backgroundColor": "#E6F4FE"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false

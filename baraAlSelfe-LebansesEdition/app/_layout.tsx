@@ -1,23 +1,26 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet, Platform } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import 'react-native-reanimated';
 
 export default function RootLayout() {
   return (
-    <View style={styles.container}>
-      <View style={styles.appWrapper}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="add-players" options={{ headerShown: false }} />
-          <Stack.Screen name="game-reveal" options={{ headerShown: false }} />
-          <Stack.Screen name="question-phase" options={{ headerShown: false }} />
-          <Stack.Screen name="results" options={{ headerShown: false }} />
-          <Stack.Screen name="voting" options={{ headerShown: false }} />
-        </Stack>
+    <SafeAreaProvider>
+      <View style={styles.container}>
+        <View style={styles.appWrapper}>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="add-players" options={{ headerShown: false }} />
+            <Stack.Screen name="game-reveal" options={{ headerShown: false }} />
+            <Stack.Screen name="question-phase" options={{ headerShown: false }} />
+            <Stack.Screen name="results" options={{ headerShown: false }} />
+            <Stack.Screen name="voting" options={{ headerShown: false }} />
+          </Stack>
+        </View>
+        <StatusBar style="auto" />
       </View>
-      <StatusBar style="auto" />
-    </View>
+    </SafeAreaProvider>
   );
 }
 
