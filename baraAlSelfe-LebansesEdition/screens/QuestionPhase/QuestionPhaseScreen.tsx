@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, ScrollView, StatusBar } from 'react-native';
+import { View, Text, Pressable, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGameStore } from '@/store/useGameStore';
@@ -215,5 +215,4 @@ export default function QuestionPhaseScreen() {
   );
 }
 
-import { TouchableOpacity } from 'react-native';
 

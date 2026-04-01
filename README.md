@@ -1,7 +1,7 @@
 # 🎲 Bara Al-Selfe: Lebanese Edition
 
 <p align="center">
-  <img src="baraAlSelfe-LebansesEdition/assets/images/bara-al-selfe-logo.png" alt="Logo" width="200"/>
+  <img src="baraAlSelfe-LebansesEdition/assets/images/bara-al-selfe-logo.png" alt="Logo" width="400"/>
 </p>
 
 ### A social deduction party game for friends and families.
